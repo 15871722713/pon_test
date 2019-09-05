@@ -2,7 +2,7 @@
 # @Author: JinHua
 # @Date:   2019-08-29 14:59:51
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-05 13:30:24
+# @Last Modified time: 2019-09-05 16:19:11
 
 import sys
 import time
@@ -10,8 +10,8 @@ import tcl_cmd
 import logger
 import unittest
 from pon import *
-import HTMLTestRunner
 from stc import send_packets
+from BeautifulReport import BeautifulReport as bf
 
 
 timestr = str(time.strftime("%Y%m%d%H%M%S"))
@@ -32,7 +32,6 @@ class TestTagAction(unittest.TestCase):
         olt.login()
         ont.login()
         stc = send_packets()
-        # time.sleep(5)
 
     def test001VlanTransparent(self):
         logger.log('Start to test001')
@@ -49,11 +48,11 @@ class TestTagAction(unittest.TestCase):
     def tearDownClass(self):
         logger.log('Tearing down test')
         olt.send_cmd('remove eth-svc Data1 from-ont-port 1000/g1')
-        # logger.close_log_file()
+        logger.close_log_file()
 
 
-fp = open('result/{}'.format(filename), 'wb')
-suite = unittest.TestLoader().loadTestsFromTestCase(TestTagAction)
-runner = HTMLTestRunner.HTMLTestRunner(fp)
-runner.run(suite)
-fp.close()
+if __name__ == '__main__':
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(TestTagAction))
+    run = bf(suite)
+    run.report(filename=filename, report_dir='result', description='TestTagAction')

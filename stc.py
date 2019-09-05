@@ -2,18 +2,18 @@
 # @Author: JinHua
 # @Date:   2019-09-04 12:50:49
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-05 13:33:12
+# @Last Modified time: 2019-09-05 16:17:02
 
 import logger
 import tcl_cmd
-import Tkinter
+import tkinter
 
 
 class stc(object):
     """docstring for stc"""
 
     def __init__(self):
-        self.tclsh = Tkinter.Tcl()
+        self.tclsh = tkinter.Tcl()
 
     def tcl_cmd(self, cmd):
         return self.tclsh.eval(cmd)

@@ -1,0 +1,35 @@
+Set up test
+Start to login olt
+Login sucessful
+Start to login ont
+Login sucessful
+Start to test001
+Send olt cmd:add eth-svc Data1 to-ont-port 1000/g1 bw-profile CC+-BW svc-tag-action TA01 outer-vlan 100
+add eth-svc Data1 to-ont-port 1000/g1 bw-profile CC+-BW svc-tag-actio$c Data1 to-ont-port 1000/g1 bw-profile CC+-BW svc-tag-action           TA01 out$-ont-port 1000/g1 bw-profile CC+-BW svc-tag-action TA01 oute           r-vlan 10$1000/g1 bw-profile CC+-BW svc-tag-action TA01 outer-vlan 100           
+
+Start to send packets.
+Send packets finished.
+Start to check result.
+rx dropCount = 0 , tx dropCount = 0
+Send ont cmd:brctl showmacs bronu1
+ brctl showmacs bronu1
+port no	vid	mac addr		is local?	ageing timer
+  2	 100	00:00:00:00:00:11	no		   0.58
+  1	 100	00:00:00:00:00:88	no		   0.58
+  1	4096	ec:4f:82:65:f1:09	yes		   0.00
+~ # 
+Send olt cmd:show mac on-vlan 100
+
+wuhan>show mac on-vlan 100
+VLAN MAC Address       Interface                                         Type      
+---- ----------------- ------------------------------------------------- ----------
+100  00:00:00:00:00:11 GPON 2/8                                          learned   
+100  00:00:00:00:00:88 Intf 2/g4                                         learned   
+
+2 MAC addresses found.
+wuhan>
+Tearing down test
+Send olt cmd:remove eth-svc Data1 from-ont-port 1000/g1
+remove eth-svc Data1 from-ont-port 1000/g1
+success: Delete Ethernet service "Data1" on "1000/g1".
+wuhan>
