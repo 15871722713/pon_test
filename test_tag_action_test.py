@@ -2,7 +2,7 @@
 # @Author: JinHua
 # @Date:   2019-08-29 14:59:51
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-04 18:12:35
+# @Last Modified time: 2019-09-05 13:30:24
 
 import sys
 import time
@@ -24,6 +24,7 @@ class TestTagAction(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         logger.set_log_level(logger.DEBUG)
+        logger.logfile(logname)
         logger.log('Set up test')
         global ont, olt, stc
         ont = Ont()
@@ -39,20 +40,15 @@ class TestTagAction(unittest.TestCase):
         time.sleep(5)
         stc.main(tcl_cmd.cmds)
         rxStreamResult, txStreamResult = stc.get_status()
-        # print(rxStreamResult)
-        # print(type(rxStreamResult))
         self.assertEqual(int(rxStreamResult), 0, msg='Upstream drop  packets')
         self.assertEqual(int(txStreamResult), 0, msg='Dwstream drop  packets')
-        result = ont.send_cmd(ont.p_ont_linux, 'brctl showmacs bronu1')
-        print(result)
-        result = olt.send_cmd('show mac on-vlan 100')
-        print(result)
+        ont.send_cmd(ont.p_ont_linux, 'brctl showmacs bronu1')
+        olt.send_cmd('show mac on-vlan 100')
 
     @classmethod
     def tearDownClass(self):
         logger.log('Tearing down test')
         olt.send_cmd('remove eth-svc Data1 from-ont-port 1000/g1')
-        # stc.finished()
         # logger.close_log_file()
 
 

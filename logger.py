@@ -2,7 +2,7 @@
 # @Author: JinHua
 # @Date:   2019-08-29 11:12:02
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-04 17:12:11
+# @Last Modified time: 2019-09-05 13:34:07
 
 
 import os
@@ -23,11 +23,9 @@ def logfile(file):
 
 
 def log(msg):
-    # fs.write(msg + '\n')
-    # fs.flush()
-    # print(msg)
-    # print(type(msg))
-    print time.strftime("%Y-%m-%d %H:%M:%S") + " " + msg
+    fs.write(msg + '\n')
+    fs.flush()
+    print(time.strftime("%Y-%m-%d %H:%M:%S") + " " + msg)
 
 
 def debug(msg):

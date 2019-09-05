@@ -2,9 +2,9 @@
 # @Author: JinHua
 # @Date:   2019-08-29 15:45:50
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-02 08:46:34
+# @Last Modified time: 2019-09-05 13:37:08
 
-from config_read import get_config_by_name
+from read_config import get_config_by_name
 from StcPython import StcPython
 stc = StcPython()
 

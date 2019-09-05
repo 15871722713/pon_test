@@ -2,13 +2,13 @@
 # @Author: JinHua
 # @Date:   2019-08-29 10:59:25
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-08-30 11:51:06
+# @Last Modified time: 2019-09-05 13:37:09
 
 
 import time
 import logger
 import telnetlib
-from config_read import get_config_by_name
+from read_config import get_config_by_name
 
 
 ont_ip = get_config_by_name('ONT', 'ip')
@@ -43,12 +43,11 @@ class Ont(object):
         self.ssh.write(b'\n')
         i, m, text = self.ssh.expect(self.ont_prompts, timeout=10)
         if i:
-            logger.log(text.decode('ascii'))
             logger.log('Login sucessful')
 
     def prompt_ont_brcm_to_linux(self):
         self.ssh.write(b'\n')
-        o = self.ssh.read_until(self.ont_brcm_prompt_regex, timeout=5)
+        self.ssh.read_until(self.ont_brcm_prompt_regex, timeout=5)
         self.ssh.write(b'sh\n')
         self.ssh.read_until(self.ont_linux_prompt_regex, timeout=5)
 

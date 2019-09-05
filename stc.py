@@ -2,8 +2,9 @@
 # @Author: JinHua
 # @Date:   2019-09-04 12:50:49
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-04 16:59:42
+# @Last Modified time: 2019-09-05 13:33:12
 
+import logger
 import tcl_cmd
 import Tkinter
 
@@ -25,16 +26,18 @@ class send_packets(object):
         self.stc = stc()
 
     def main(self, cmds):
+        logger.log("Start to send packets.")
         for cmd in cmds:
-            # print(cmd)
             self.stc.tcl_cmd(cmd)
+        logger.log("Send packets finished.")
 
     def get_status(self):
+        logger.log("Start to check result.")
         self.stc.tcl_cmd('set rxStreamResult [stc::get streamblock1 -children-rxstreamsummaryresults]')
         rxStreamResult = self.stc.tcl_cmd('stc::get $rxStreamResult -DroppedFrameCount')
         self.stc.tcl_cmd('set rxStreamResult [stc::get streamblock2 -children-rxstreamsummaryresults]')
         txStreamResult = self.stc.tcl_cmd('stc::get $rxStreamResult -DroppedFrameCount')
-        print('rx dropCount = {} , tx dropCount = {}'.format(rxStreamResult, txStreamResult))
+        logger.log('rx dropCount = {} , tx dropCount = {}'.format(rxStreamResult, txStreamResult))
         return rxStreamResult, txStreamResult
 
 

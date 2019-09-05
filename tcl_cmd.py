@@ -2,32 +2,44 @@
 # @Author: JinHua
 # @Date:   2019-09-04 13:28:28
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-04 16:12:02
+# @Last Modified time: 2019-09-05 13:37:11
 
-stc_path = 'C:/Program Files/Spirent Communications/Spirent TestCenter 4.98/Spirent TestCenter Application/'
+from read_config import get_config_by_name
+
+ip = get_config_by_name('STC', 'ip')
+slotA = get_config_by_name('STC', 'slotA')
+slotB = get_config_by_name('STC', 'slotB')
+portA = get_config_by_name('STC', 'portA')
+portB = get_config_by_name('STC', 'portB')
+macA = get_config_by_name('STC', 'macA')
+macB = get_config_by_name('STC', 'macB')
+vlan = get_config_by_name('STC', 'vlan')
+bw = get_config_by_name('STC', 'bw')
+
+stc_path = get_config_by_name('STC', 'path')
 path = stc_path + 'Spirenttestcenter.tcl'
 cmds = [
     'source "{}"'.format(path),
-    'set PortA [stc::create "Port" -under project1 -Location "//192.168.0.100/1/3"]',
-    'set PortB [stc::create "Port" -under project1 -Location "//192.168.0.100/1/4"]',
+    'set PortA [stc::create "Port" -under project1 -Location "//{}/{}/{}"]'.format(ip, slotA, portA),
+    'set PortB [stc::create "Port" -under project1 -Location "//{}/{}/{}"]'.format(ip, slotB, portB),
     'set port_List "$PortA $PortB"',
     'stc::perform attachPorts -autoConnect true -portList [ stc::get project1 -children-port]',
     'stc::config [stc::get [stc::get $PortA -children-generator] -children]  -SchedulingMode RATE_BASED',
     'stc::config [stc::get [stc::get $PortB -children-generator] -children] -SchedulingMode RATE_BASED',
     'set StreamBlock1 [stc::create "StreamBlock" -under $PortA ]',
     'set StreamBlock1_EthHeader [stc::get $StreamBlock1 -children-ethernet:ethernetii]',
-    'stc::config $StreamBlock1_EthHeader -dstMac 00:11:11:11:11:78 -srcMac 00:11:11:11:11:70',
+    'stc::config $StreamBlock1_EthHeader -dstMac {} -srcMac {}'.format(macA, macB),
     'set vlanif1 [stc::get $StreamBlock1_EthHeader -children-vlans]',
-    'stc::create "vlan" -under $vlanif1 -id 100',
+    'stc::create "vlan" -under $vlanif1 -id {}'.format(vlan),
     'set StreamBlock2 [stc::create "StreamBlock" -under $PortB ]',
     'set StreamBlock2_EthHeader [stc::get $StreamBlock2 -children-ethernet:ethernetii]',
-    'stc::config $StreamBlock2_EthHeader -dstMac 00:11:11:11:11:70 -srcMac 00:11:11:11:11:78',
+    'stc::config $StreamBlock2_EthHeader -dstMac {} -srcMac {}'.format(macB, macA),
     'set vlanif2 [stc::get $StreamBlock2_EthHeader -children-vlans]',
-    'stc::create "vlan" -under $vlanif2 -id 100',
+    'stc::create "vlan" -under $vlanif2 -id {}'.format(vlan),
     'set streamblock1Load [stc::get $StreamBlock1 -affiliationstreamblockloadprofile-Targets]',
     'set streamblock2Load [stc::get $StreamBlock2 -affiliationstreamblockloadprofile-Targets]',
-    'stc::config $streamblock1Load -LoadUnit MEGABITS_PER_SECOND -load 80',
-    'stc::config $streamblock2Load -LoadUnit MEGABITS_PER_SECOND -load 80',
+    'stc::config $streamblock1Load -LoadUnit MEGABITS_PER_SECOND -load {}'.format(bw),
+    'stc::config $streamblock2Load -LoadUnit MEGABITS_PER_SECOND -load {}'.format(bw),
     'stc::config $StreamBlock1  -FixedFrameLength 512',
     'stc::config $StreamBlock2  -FixedFrameLength 512',
     'set streamblock_List "$StreamBlock1 $StreamBlock2"',
