@@ -2,21 +2,21 @@
 # @Author: JinHua
 # @Date:   2019-08-29 14:59:51
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-05 16:19:11
+# @Last Modified time: 2019-09-06 14:13:06
 
-import sys
+import os
 import time
 import tcl_cmd
 import logger
 import unittest
 from pon import *
 from stc import send_packets
-from BeautifulReport import BeautifulReport as bf
 
 
 timestr = str(time.strftime("%Y%m%d%H%M%S"))
+folder = os.path.dirname(os.path.abspath(__file__))
 filename = 'tag_action_test_{}.html'.format(timestr)
-logname = 'tag_action_test_{}.log'.format(timestr)
+logname = '{}/log/tag_action_test_{}.log'.format(folder, timestr)
 
 
 class TestTagAction(unittest.TestCase):
@@ -54,5 +54,5 @@ class TestTagAction(unittest.TestCase):
 if __name__ == '__main__':
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestTagAction))
-    run = bf(suite)
+    run = testReport(suite)
     run.report(filename=filename, report_dir='result', description='TestTagAction')

@@ -2,14 +2,15 @@
 # @Author: JinHua
 # @Date:   2019-08-29 10:59:25
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-05 13:37:09
+# @Last Modified time: 2019-09-06 14:14:58
 
-
+import os
 import time
 import logger
 import telnetlib
 from read_config import get_config_by_name
 
+from BeautifulReport import BeautifulReport as bf
 
 ont_ip = get_config_by_name('ONT', 'ip')
 ont_port = get_config_by_name('ONT', 'port')
@@ -17,6 +18,31 @@ ont_port = get_config_by_name('ONT', 'port')
 olt_ip = get_config_by_name('OLT', 'ip')
 olt_username = get_config_by_name('OLT', 'username')
 olt_password = get_config_by_name('OLT', 'password')
+
+
+class testReport(bf):
+    """docstring for testReport"""
+
+    def report(self, description, filename: str = None, report_dir='.', log_path=None, theme='theme_default'):
+        if log_path:
+            import warnings
+            message = ('"log_path" is deprecated, please replace with "report_dir"\n'
+                       "e.g. result.report(filename='测试报告_demo', description='测试报告', report_dir='report')")
+            warnings.warn(message)
+
+        if filename:
+            self.filename = filename if filename.endswith('.html') else filename + '.html'
+
+        if description:
+            self.title = description
+
+        self.report_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), report_dir)
+        os.makedirs(self.report_dir, exist_ok=True)
+        self.suites.run(result=self)
+        self.stopTestRun(self.title)
+        self.output_report(theme)
+        text = '\n测试已全部完成, 可打开 {} 查看报告'.format(os.path.join(self.report_dir, self.filename))
+        print(text)
 
 
 class Ont(object):

@@ -2,7 +2,7 @@
 # @Author: JinHua
 # @Date:   2019-08-29 11:12:02
 # @Last Modified by:   JinHua
-# @Last Modified time: 2019-09-05 13:34:07
+# @Last Modified time: 2019-09-06 12:40:36
 
 
 import os
@@ -19,7 +19,7 @@ def set_log_level(level):
 
 def logfile(file):
     global fs
-    fs = open(os.path.join('log', file), 'w')
+    fs = open(file, 'w')
 
 
 def log(msg):
